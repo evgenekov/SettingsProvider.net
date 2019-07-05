@@ -13,10 +13,10 @@ namespace SettingsProviderNet
 
             var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
             var ms = new MemoryStream();
-            var writer = JsonReaderWriterFactory.CreateJsonWriter(ms, Encoding.Unicode);
+            var writer = JsonReaderWriterFactory.CreateJsonWriter(ms, Encoding.UTF8);
             serializer.WriteObject(ms, settings);
             writer.Flush();
-            var jsonString = Encoding.Default.GetString(ms.ToArray());
+            var jsonString = Encoding.UTF8.GetString(ms.ToArray());
             WriteTextFile(filename, jsonString);
         }
 
@@ -30,7 +30,7 @@ namespace SettingsProviderNet
             if (!string.IsNullOrEmpty(readTextFile))
             {
                 var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
-                return (Dictionary<string, string>)serializer.ReadObject(new MemoryStream(Encoding.Default.GetBytes(readTextFile)));
+                return (Dictionary<string, string>)serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(readTextFile)));
             }
 
             return new Dictionary<string, string>();
